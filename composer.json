@@ -1,0 +1,14 @@
+{
+    "name": "friend-of-global-economy/website",
+    "description": "A compilation of Bill Ackman's insightful tweets",
+    "type": "project",
+    "require": {
+        "php": "^8.0",
+        "vlucas/phpdotenv": "^5.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    }
+} 
