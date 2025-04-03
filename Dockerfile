@@ -30,8 +30,10 @@ RUN composer install --no-dev --no-scripts --no-autoloader
 # Copy application files
 COPY . .
 
-# Copy .env file
-COPY .env .env
+# Create default .env if it doesn't exist
+RUN touch .env && \
+    echo "APP_ENV=production" >> .env && \
+    echo "DATABASE_PATH=/var/data/tweets.db" >> .env
 
 # Generate autoloader
 RUN composer dump-autoload --optimize
