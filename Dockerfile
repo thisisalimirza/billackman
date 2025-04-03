@@ -38,17 +38,15 @@ RUN touch .env && \
 # Generate autoloader
 RUN composer dump-autoload --optimize
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html
-
-# Make the startup script executable
-RUN chmod +x docker-entrypoint.sh
-
 # Apache configuration
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
+# Set permissions for all files
+RUN chown -R www-data:www-data /var/www/html && \
+    chmod -R 755 /var/www/html && \
+    chmod +x /var/www/html/docker-entrypoint.sh
+
 # Set the entrypoint
-CMD ["./docker-entrypoint.sh"] 
+CMD ["/var/www/html/docker-entrypoint.sh"] 
