@@ -16,6 +16,11 @@ RUN a2enmod rewrite
 # Set the working directory
 WORKDIR /var/www/html
 
+# Create storage directory for SQLite
+RUN mkdir -p /var/data && \
+    chown -R www-data:www-data /var/data && \
+    chmod -R 755 /var/data
+
 # Copy composer files first
 COPY composer.json composer.lock* ./
 
@@ -24,6 +29,9 @@ RUN composer install --no-dev --no-scripts --no-autoloader
 
 # Copy application files
 COPY . .
+
+# Copy .env file
+COPY .env .env
 
 # Generate autoloader
 RUN composer dump-autoload --optimize
